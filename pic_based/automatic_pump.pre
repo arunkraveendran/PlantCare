@@ -1091,19 +1091,72 @@ while(GO_nDONE);
 return ((ADRESH<<8)+ADRESL);
 }
 
-# 14 "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
+
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+#pragma inline(_nop)
+extern void _nop(void);
+
+# 80
+extern unsigned int flash_read(unsigned short addr);
+
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
+extern unsigned char eeprom_read(unsigned char addr);
+extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
+extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
+
+
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+#pragma inline(_delay)
+extern void _delay(unsigned long);
+
+# 16 "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
 void main()
 {
 unsigned int a;
-TRISB = 0xFF;
-TRISC = 0xFF;
+TRISD = 0;
 
-ADC_Init();
 
-do
+PORTDbits.RD2 = 1;
+PORTDbits.RD5 = 1;
+
+
+PORTDbits.RD3 = 0;
+PORTDbits.RD4 = 0;
+PORTDbits.RD6 = 0;
+PORTDbits.RD7 = 0;
+
+PORTD = 0;
+while(1)
 {
-a = ADC_Read(0);
-PORTB = a;
-PORTC = a>>8;
-}while(1);
+PORTDbits.RD1 = 1;
+
+# 40
+PORTDbits.RD3 = 0;
+PORTDbits.RD4 = 1;
+
+a = 200;
+
+while(a--)
+{
+
+for(int i = 0; i < 15000; i++);
+}
+PORTDbits.RD3 = 0;
+PORTDbits.RD4 = 0;
+PORTDbits.RD1 = 0;
+
+PORTDbits.RD6 = 0;
+PORTDbits.RD7 = 1;
+
+a = 200;
+
+while(a--)
+{
+
+for(int i = 0; i < 15000; i++);
+}
+PORTDbits.RD6 = 0;
+PORTDbits.RD7 = 0;
+}
 }

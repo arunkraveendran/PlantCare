@@ -10,19 +10,58 @@
 #endif
 
 #include "automatic_pump.h"
+#include <htc.h>
+
 
 void main()
 {
-   unsigned int a;
-   TRISB = 0xFF;
-   TRISC = 0xFF;
+	unsigned int a;
+	TRISD = 0x00;
+   
+	
+	PORTDbits.RD2 = 1;
+	PORTDbits.RD5 = 1;
 
-   ADC_Init();
 
-   do
-   {
-     a = ADC_Read(0);
-     PORTB = a;
-     PORTC = a>>8;
-   }while(1);
+	PORTDbits.RD3 = 0;
+	PORTDbits.RD4 = 0;
+	PORTDbits.RD6 = 0;
+	PORTDbits.RD7 = 0;
+
+	PORTD = 0;
+	while(1)
+	{
+		PORTDbits.RD1 = 1;
+//		for(int i = 0; i < 15000; i++);
+//		PORTD = 0;
+//		for(int i = 0; i < 15000; i++);
+
+
+		PORTDbits.RD3 = 0;
+		PORTDbits.RD4 = 1;
+		
+		a = 200;
+
+		while(a--)
+		{
+			
+			for(int i = 0; i < 15000; i++);
+		}
+		PORTDbits.RD3 = 0;
+		PORTDbits.RD4 = 0;
+		PORTDbits.RD1 = 0;
+		
+		PORTDbits.RD6 = 0;
+		PORTDbits.RD7 = 1;
+
+		a = 200;
+
+		while(a--)
+		{
+			
+			for(int i = 0; i < 15000; i++);
+		}
+		PORTDbits.RD6 = 0;
+		PORTDbits.RD7 = 0;
+   }
 }
