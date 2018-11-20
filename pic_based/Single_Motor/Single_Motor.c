@@ -6,6 +6,8 @@
 // Date         Name                 Description                             //
 //---------------------------------------------------------------------------//
 // 24Feb18      Arun                 Initial Version                         //
+// 24Mar18      Arun                 Updatd Timing                           //
+// 20Nov18      Arun                 Single motor 12V                        //
 //---------------------------------------------------------------------------//
 #endif
 
@@ -18,50 +20,52 @@ void main()
 	unsigned int a;
 	TRISD = 0x00;
    
-	
 	PORTDbits.RD2 = 1;
 	PORTDbits.RD5 = 1;
 
 
 	PORTDbits.RD3 = 0;
-	PORTDbits.RD4 = 0;
+	PORTDbits.RD4 = 1;  // MOTOR OFF
 	PORTDbits.RD6 = 0;
 	PORTDbits.RD7 = 0;
 
 	PORTD = 0;
 	while(1)
 	{
-		PORTDbits.RD1 = 1;
-//		for(int i = 0; i < 15000; i++);
-//		PORTD = 0;
-//		for(int i = 0; i < 15000; i++);
-
-
-		PORTDbits.RD3 = 0;
-		PORTDbits.RD4 = 1;
+		PORTDbits.RD1 = 1;  // LED ON
 		
-		a = 200;
+		//MOTOR ON
+		PORTDbits.RD4 = 0;  // MOTOR ON
+		
+		a = 375;  // 15SEC DELAY
 
 		while(a--)
 		{
 			
 			for(int i = 0; i < 15000; i++);
+			if (a<=50)
+			{
+				PORTDbits.RD0 = ~PORTDbits.RD0;
+			}
 		}
-		PORTDbits.RD3 = 0;
-		PORTDbits.RD4 = 0;
-		PORTDbits.RD1 = 0;
-		
-		PORTDbits.RD6 = 0;
-		PORTDbits.RD7 = 1;
 
-		a = 200;
+		PORTDbits.RD0 = 0;
+		// MOTOR OFF
+		PORTDbits.RD4 = 1;  //MOTOR OFF
 
-		while(a--)
+		// LED OFF
+		PORTDbits.RD1 = 0;  // LED OFF
+
+		int b = 1000;
+		while(b--)
 		{
+        	a= 100;
+			while(a--)
+			{
 			
-			for(int i = 0; i < 15000; i++);
+				for(int i = 0; i < 15000; i++);
+			}
+			PORTDbits.RD1 = ~PORTDbits.RD1;
 		}
-		PORTDbits.RD6 = 0;
-		PORTDbits.RD7 = 0;
    }
 }

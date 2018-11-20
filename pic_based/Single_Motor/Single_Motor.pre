@@ -1,5 +1,5 @@
 
-# 1 "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
+# 1 "D:\Work\Auto_Watering\PlantCare\pic_based\Single_Motor\Single_Motor.c"
 
 # 82 "C:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic16f877a.h"
 volatile unsigned char INDF @ 0x000;
@@ -1071,7 +1071,7 @@ unsigned EEPGD : 1;
 
 volatile unsigned char EECON2 @ 0x18D;
 
-# 16 "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.h"
+# 16 "D:\Work\Auto_Watering\PlantCare\pic_based\Single_Motor\automatic_pump.h"
 void ADC_Init()
 {
 ADCON0 = 0x41;
@@ -1110,19 +1110,18 @@ extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsign
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 16 "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
+# 18 "D:\Work\Auto_Watering\PlantCare\pic_based\Single_Motor\Single_Motor.c"
 void main()
 {
 unsigned int a;
-TRISD = 0;
-
+TRISD = 0x00;
 
 PORTDbits.RD2 = 1;
 PORTDbits.RD5 = 1;
 
 
 PORTDbits.RD3 = 0;
-PORTDbits.RD4 = 0;
+PORTDbits.RD4 = 1;
 PORTDbits.RD6 = 0;
 PORTDbits.RD7 = 0;
 
@@ -1131,32 +1130,38 @@ while(1)
 {
 PORTDbits.RD1 = 1;
 
-# 40
-PORTDbits.RD3 = 0;
+
+PORTDbits.RD4 = 0;
+
+a = 375;
+
+while(a--)
+{
+
+for(int i = 0; i < 15000; i++);
+if (a<=50)
+{
+PORTDbits.RD0 = ~PORTDbits.RD0;
+}
+}
+
+PORTDbits.RD0 = 0;
+
 PORTDbits.RD4 = 1;
 
-a = 200;
 
-while(a--)
-{
-
-for(int i = 0; i < 15000; i++);
-}
-PORTDbits.RD3 = 0;
-PORTDbits.RD4 = 0;
 PORTDbits.RD1 = 0;
 
-PORTDbits.RD6 = 0;
-PORTDbits.RD7 = 1;
-
-a = 200;
-
+int b = 1000;
+while(b--)
+{
+a= 100;
 while(a--)
 {
 
 for(int i = 0; i < 15000; i++);
 }
-PORTDbits.RD6 = 0;
-PORTDbits.RD7 = 0;
+PORTDbits.RD1 = ~PORTDbits.RD1;
+}
 }
 }

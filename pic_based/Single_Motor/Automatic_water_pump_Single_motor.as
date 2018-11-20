@@ -77,7 +77,7 @@ _RD	set	3168
 _WR	set	3169
 	global	_WREN
 _WREN	set	3170
-	file	"automatic_water_pump.as"
+	file	"Automatic_water_pump_Single_motor.as"
 	line	#
 psect cinit,class=CODE,delta=2
 global start_initialization
@@ -98,18 +98,21 @@ __pcstackCOMMON:
 ?_main:	; 0 bytes @ 0x0
 	global	??_main
 ??_main:	; 0 bytes @ 0x0
-	global	main@a
-main@a:	; 2 bytes @ 0x0
+	global	main@b
+main@b:	; 2 bytes @ 0x0
 	ds	2
 	global	main@i
 main@i:	; 2 bytes @ 0x2
 	ds	2
-	global	main@i_1240
-main@i_1240:	; 2 bytes @ 0x4
+	global	main@i_1241
+main@i_1241:	; 2 bytes @ 0x4
+	ds	2
+	global	main@a
+main@a:	; 2 bytes @ 0x6
 	ds	2
 ;;Data sizes: Strings 0, constant 0, data 0, bss 0, persistent 0 stack 0
 ;;Auto spaces:   Size  Autos    Used
-;; COMMON          14      6       6
+;; COMMON          14      8       8
 ;; BANK0           80      0       0
 ;; BANK1           80      0       0
 ;; BANK3           96      0       0
@@ -151,8 +154,8 @@ main@i_1240:	; 2 bytes @ 0x4
 ;; ---------------------------------------------------------------------------------
 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;; ---------------------------------------------------------------------------------
-;; (0) _main                                                 6     6      0      90
-;;                                              0 COMMON     6     6      0
+;; (0) _main                                                 8     8      0     120
+;;                                              0 COMMON     8     8      0
 ;; ---------------------------------------------------------------------------------
 ;; Estimated maximum stack depth 0
 ;; ---------------------------------------------------------------------------------
@@ -169,7 +172,7 @@ main@i_1240:	; 2 bytes @ 0x4
 ;;EEDATA             100      0       0       0        0.0%
 ;;NULL                 0      0       0       0        0.0%
 ;;CODE                 0      0       0       0        0.0%
-;;COMMON               E      6       6       1       42.9%
+;;COMMON               E      8       8       1       57.1%
 ;;BITSFR0              0      0       0       1        0.0%
 ;;SFR0                 0      0       0       1        0.0%
 ;;BITSFR1              0      0       0       2        0.0%
@@ -195,27 +198,28 @@ psect	maintext
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 17 in file "D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
+;;		line 19 in file "D:\Work\Auto_Watering\PlantCare\pic_based\Single_Motor\Single_Motor.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
 ;;  i               2    4[COMMON] int 
 ;;  i               2    2[COMMON] int 
-;;  a               2    0[COMMON] unsigned int 
+;;  b               2    0[COMMON] int 
+;;  a               2    6[COMMON] unsigned int 
 ;; Return value:  Size  Location     Type
 ;;		None               void
 ;; Registers used:
-;;		wreg, status,2, btemp+1
+;;		wreg, status,2, status,0, btemp+1
 ;; Tracked objects:
 ;;		On entry : 17F/0
 ;;		On exit  : 0/0
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
 ;;      Params:         0       0       0       0       0
-;;      Locals:         6       0       0       0       0
+;;      Locals:         8       0       0       0       0
 ;;      Temps:          0       0       0       0       0
-;;      Totals:         6       0       0       0       0
-;;Total ram usage:        6 bytes
+;;      Totals:         8       0       0       0       0
+;;Total ram usage:        8 bytes
 ;; This function calls:
 ;;		Nothing
 ;; This function is called by:
@@ -223,100 +227,95 @@ psect	maintext
 ;; This function uses a non-reentrant model
 ;;
 psect	maintext
-	file	"D:\Work\Auto_Watering\PlantCare\pic_based\automatic_pump.c"
-	line	17
+	file	"D:\Work\Auto_Watering\PlantCare\pic_based\Single_Motor\Single_Motor.c"
+	line	19
 	global	__size_of_main
 	__size_of_main	equ	__end_of_main-_main
 	
 _main:	
 	opt	stack 8
-; Regs used in _main: [wreg+status,2+btemp+1]
-	line	19
+; Regs used in _main: [wreg+status,2+status,0+btemp+1]
+	line	21
 	
-l1769:	
-;automatic_pump.c: 18: unsigned int a;
-;automatic_pump.c: 19: TRISD = 0;
+l1777:	
+;Single_Motor.c: 20: unsigned int a;
+;Single_Motor.c: 21: TRISD = 0x00;
 	bsf	status, 5	;RP0=1, select bank1
 	bcf	status, 6	;RP1=0, select bank1
 	clrf	(136)^080h	;volatile
-	line	22
+	line	23
 	
-l1771:	
-;automatic_pump.c: 22: PORTDbits.RD2 = 1;
+l1779:	
+;Single_Motor.c: 23: PORTDbits.RD2 = 1;
 	bcf	status, 5	;RP0=0, select bank0
 	bcf	status, 6	;RP1=0, select bank0
 	bsf	(8),2	;volatile
-	line	23
-	
-l1773:	
-;automatic_pump.c: 23: PORTDbits.RD5 = 1;
-	bsf	(8),5	;volatile
-	line	26
-	
-l1775:	
-;automatic_pump.c: 26: PORTDbits.RD3 = 0;
-	bcf	(8),3	;volatile
-	line	27
-	
-l1777:	
-;automatic_pump.c: 27: PORTDbits.RD4 = 0;
-	bcf	(8),4	;volatile
-	line	28
-	
-l1779:	
-;automatic_pump.c: 28: PORTDbits.RD6 = 0;
-	bcf	(8),6	;volatile
-	line	29
+	line	24
 	
 l1781:	
-;automatic_pump.c: 29: PORTDbits.RD7 = 0;
-	bcf	(8),7	;volatile
-	line	31
-;automatic_pump.c: 31: PORTD = 0;
-	clrf	(8)	;volatile
-	goto	l1783
-	line	32
-;automatic_pump.c: 32: while(1)
-	
-l695:	
-	line	34
+;Single_Motor.c: 24: PORTDbits.RD5 = 1;
+	bsf	(8),5	;volatile
+	line	27
 	
 l1783:	
-;automatic_pump.c: 33: {
-;automatic_pump.c: 34: PORTDbits.RD1 = 1;
-	bsf	(8),1	;volatile
-	line	40
+;Single_Motor.c: 27: PORTDbits.RD3 = 0;
+	bcf	(8),3	;volatile
+	line	28
 	
 l1785:	
-;automatic_pump.c: 40: PORTDbits.RD3 = 0;
-	bcf	(8),3	;volatile
-	line	41
+;Single_Motor.c: 28: PORTDbits.RD4 = 1;
+	bsf	(8),4	;volatile
+	line	29
 	
 l1787:	
-;automatic_pump.c: 41: PORTDbits.RD4 = 1;
-	bsf	(8),4	;volatile
-	line	43
+;Single_Motor.c: 29: PORTDbits.RD6 = 0;
+	bcf	(8),6	;volatile
+	line	30
 	
 l1789:	
-;automatic_pump.c: 43: a = 200;
-	movlw	low(0C8h)
-	movwf	(main@a)
-	movlw	high(0C8h)
-	movwf	((main@a))+1
-	line	45
-;automatic_pump.c: 45: while(a--)
-	goto	l1801
+;Single_Motor.c: 30: PORTDbits.RD7 = 0;
+	bcf	(8),7	;volatile
+	line	32
+;Single_Motor.c: 32: PORTD = 0;
+	clrf	(8)	;volatile
+	goto	l1791
+	line	33
+;Single_Motor.c: 33: while(1)
 	
-l697:	
-	line	48
+l695:	
+	line	35
 	
 l1791:	
-;automatic_pump.c: 46: {
-;automatic_pump.c: 48: for(int i = 0; i < 15000; i++);
+;Single_Motor.c: 34: {
+;Single_Motor.c: 35: PORTDbits.RD1 = 1;
+	bsf	(8),1	;volatile
+	line	38
+	
+l1793:	
+;Single_Motor.c: 38: PORTDbits.RD4 = 0;
+	bcf	(8),4	;volatile
+	line	40
+	
+l1795:	
+;Single_Motor.c: 40: a = 375;
+	movlw	low(0177h)
+	movwf	(main@a)
+	movlw	high(0177h)
+	movwf	((main@a))+1
+	line	42
+;Single_Motor.c: 42: while(a--)
+	goto	l1811
+	
+l697:	
+	line	45
+	
+l1797:	
+;Single_Motor.c: 43: {
+;Single_Motor.c: 45: for(int i = 0; i < 15000; i++);
 	clrf	(main@i)
 	clrf	(main@i+1)
 	
-l1793:	
+l1799:	
 	movf	(main@i+1),w
 	xorlw	80h
 	movwf	btemp+1
@@ -332,16 +331,16 @@ u45:
 	goto	u41
 	goto	u40
 u41:
-	goto	l1797
+	goto	l1803
 u40:
-	goto	l1801
+	goto	l1807
 	
-l1795:	
-	goto	l1801
+l1801:	
+	goto	l1807
 	
 l698:	
 	
-l1797:	
+l1803:	
 	movlw	low(01h)
 	addwf	(main@i),f
 	skipnc
@@ -349,7 +348,7 @@ l1797:
 	movlw	high(01h)
 	addwf	(main@i+1),f
 	
-l1799:	
+l1805:	
 	movf	(main@i+1),w
 	xorlw	80h
 	movwf	btemp+1
@@ -365,140 +364,61 @@ u55:
 	goto	u51
 	goto	u50
 u51:
-	goto	l1797
+	goto	l1803
 u50:
-	goto	l1801
+	goto	l1807
 	
 l699:	
-	goto	l1801
-	line	49
+	line	46
 	
-l696:	
-	line	45
-	
-l1801:	
-	movlw	low(01h)
-	subwf	(main@a),f
-	movlw	high(01h)
-	skipc
-	decf	(main@a+1),f
-	subwf	(main@a+1),f
-	movlw	high(0FFFFh)
-	xorwf	((main@a+1)),w
-	skipz
-	goto	u65
-	movlw	low(0FFFFh)
-	xorwf	((main@a)),w
-u65:
-
-	skipz
+l1807:	
+;Single_Motor.c: 46: if (a<=50)
+	movlw	high(033h)
+	subwf	(main@a+1),w
+	movlw	low(033h)
+	skipnz
+	subwf	(main@a),w
+	skipnc
 	goto	u61
 	goto	u60
 u61:
-	goto	l1791
-u60:
-	
-l700:	
-	line	50
-;automatic_pump.c: 49: }
-;automatic_pump.c: 50: PORTDbits.RD3 = 0;
-	bcf	status, 5	;RP0=0, select bank0
-	bcf	status, 6	;RP1=0, select bank0
-	bcf	(8),3	;volatile
-	line	51
-;automatic_pump.c: 51: PORTDbits.RD4 = 0;
-	bcf	(8),4	;volatile
-	line	52
-;automatic_pump.c: 52: PORTDbits.RD1 = 0;
-	bcf	(8),1	;volatile
-	line	54
-;automatic_pump.c: 54: PORTDbits.RD6 = 0;
-	bcf	(8),6	;volatile
-	line	55
-;automatic_pump.c: 55: PORTDbits.RD7 = 1;
-	bsf	(8),7	;volatile
-	line	57
-	
-l1803:	
-;automatic_pump.c: 57: a = 200;
-	movlw	low(0C8h)
-	movwf	(main@a)
-	movlw	high(0C8h)
-	movwf	((main@a))+1
-	line	59
-;automatic_pump.c: 59: while(a--)
-	goto	l1815
-	
-l702:	
-	line	62
-	
-l1805:	
-;automatic_pump.c: 60: {
-;automatic_pump.c: 62: for(int i = 0; i < 15000; i++);
-	clrf	(main@i_1240)
-	clrf	(main@i_1240+1)
-	
-l1807:	
-	movf	(main@i_1240+1),w
-	xorlw	80h
-	movwf	btemp+1
-	movlw	(high(03A98h))^80h
-	subwf	btemp+1,w
-	skipz
-	goto	u75
-	movlw	low(03A98h)
-	subwf	(main@i_1240),w
-u75:
-
-	skipc
-	goto	u71
-	goto	u70
-u71:
 	goto	l1811
-u70:
-	goto	l1815
+u60:
+	line	48
 	
 l1809:	
-	goto	l1815
+;Single_Motor.c: 47: {
+;Single_Motor.c: 48: PORTDbits.RD0 = ~PORTDbits.RD0;
+	clrc
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	btfss	(8),0	;volatile
+	setc
+	btfsc	status,0
+	goto	u71
+	goto	u70
 	
-l703:	
+u71:
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	bsf	(8),0	;volatile
+	goto	u84
+u70:
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	bcf	(8),0	;volatile
+u84:
+	goto	l1811
+	line	49
+	
+l700:	
+	goto	l1811
+	line	50
+	
+l696:	
+	line	42
 	
 l1811:	
-	movlw	low(01h)
-	addwf	(main@i_1240),f
-	skipnc
-	incf	(main@i_1240+1),f
-	movlw	high(01h)
-	addwf	(main@i_1240+1),f
-	
-l1813:	
-	movf	(main@i_1240+1),w
-	xorlw	80h
-	movwf	btemp+1
-	movlw	(high(03A98h))^80h
-	subwf	btemp+1,w
-	skipz
-	goto	u85
-	movlw	low(03A98h)
-	subwf	(main@i_1240),w
-u85:
-
-	skipc
-	goto	u81
-	goto	u80
-u81:
-	goto	l1811
-u80:
-	goto	l1815
-	
-l704:	
-	goto	l1815
-	line	63
-	
-l701:	
-	line	59
-	
-l1815:	
 	movlw	low(01h)
 	subwf	(main@a),f
 	movlw	high(01h)
@@ -517,30 +437,207 @@ u95:
 	goto	u91
 	goto	u90
 u91:
-	goto	l1805
+	goto	l1797
 u90:
 	
-l705:	
-	line	64
-;automatic_pump.c: 63: }
-;automatic_pump.c: 64: PORTDbits.RD6 = 0;
+l701:	
+	line	52
+;Single_Motor.c: 49: }
+;Single_Motor.c: 50: }
+;Single_Motor.c: 52: PORTDbits.RD0 = 0;
 	bcf	status, 5	;RP0=0, select bank0
 	bcf	status, 6	;RP1=0, select bank0
-	bcf	(8),6	;volatile
-	line	65
-;automatic_pump.c: 65: PORTDbits.RD7 = 0;
-	bcf	(8),7	;volatile
-	goto	l1783
+	bcf	(8),0	;volatile
+	line	54
+;Single_Motor.c: 54: PORTDbits.RD4 = 1;
+	bsf	(8),4	;volatile
+	line	57
+;Single_Motor.c: 57: PORTDbits.RD1 = 0;
+	bcf	(8),1	;volatile
+	line	59
+	
+l1813:	
+;Single_Motor.c: 59: int b = 1000;
+	movlw	low(03E8h)
+	movwf	(main@b)
+	movlw	high(03E8h)
+	movwf	((main@b))+1
+	line	60
+;Single_Motor.c: 60: while(b--)
+	goto	l1831
+	
+l703:	
+	line	62
+	
+l1815:	
+;Single_Motor.c: 61: {
+;Single_Motor.c: 62: a= 100;
+	movlw	low(064h)
+	movwf	(main@a)
+	movlw	high(064h)
+	movwf	((main@a))+1
+	line	63
+;Single_Motor.c: 63: while(a--)
+	goto	l1827
+	
+l705:	
 	line	66
 	
+l1817:	
+;Single_Motor.c: 64: {
+;Single_Motor.c: 66: for(int i = 0; i < 15000; i++);
+	clrf	(main@i_1241)
+	clrf	(main@i_1241+1)
+	
+l1819:	
+	movf	(main@i_1241+1),w
+	xorlw	80h
+	movwf	btemp+1
+	movlw	(high(03A98h))^80h
+	subwf	btemp+1,w
+	skipz
+	goto	u105
+	movlw	low(03A98h)
+	subwf	(main@i_1241),w
+u105:
+
+	skipc
+	goto	u101
+	goto	u100
+u101:
+	goto	l1823
+u100:
+	goto	l1827
+	
+l1821:	
+	goto	l1827
+	
 l706:	
-	line	32
-	goto	l1783
+	
+l1823:	
+	movlw	low(01h)
+	addwf	(main@i_1241),f
+	skipnc
+	incf	(main@i_1241+1),f
+	movlw	high(01h)
+	addwf	(main@i_1241+1),f
+	
+l1825:	
+	movf	(main@i_1241+1),w
+	xorlw	80h
+	movwf	btemp+1
+	movlw	(high(03A98h))^80h
+	subwf	btemp+1,w
+	skipz
+	goto	u115
+	movlw	low(03A98h)
+	subwf	(main@i_1241),w
+u115:
+
+	skipc
+	goto	u111
+	goto	u110
+u111:
+	goto	l1823
+u110:
+	goto	l1827
 	
 l707:	
+	goto	l1827
 	line	67
 	
+l704:	
+	line	63
+	
+l1827:	
+	movlw	low(01h)
+	subwf	(main@a),f
+	movlw	high(01h)
+	skipc
+	decf	(main@a+1),f
+	subwf	(main@a+1),f
+	movlw	high(0FFFFh)
+	xorwf	((main@a+1)),w
+	skipz
+	goto	u125
+	movlw	low(0FFFFh)
+	xorwf	((main@a)),w
+u125:
+
+	skipz
+	goto	u121
+	goto	u120
+u121:
+	goto	l1817
+u120:
+	goto	l1829
+	
 l708:	
+	line	68
+	
+l1829:	
+;Single_Motor.c: 67: }
+;Single_Motor.c: 68: PORTDbits.RD1 = ~PORTDbits.RD1;
+	clrc
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	btfss	(8),1	;volatile
+	setc
+	btfsc	status,0
+	goto	u131
+	goto	u130
+	
+u131:
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	bsf	(8),1	;volatile
+	goto	u144
+u130:
+	bcf	status, 5	;RP0=0, select bank0
+	bcf	status, 6	;RP1=0, select bank0
+	bcf	(8),1	;volatile
+u144:
+	goto	l1831
+	line	69
+	
+l702:	
+	line	60
+	
+l1831:	
+	movlw	low(-1)
+	addwf	(main@b),f
+	skipnc
+	incf	(main@b+1),f
+	movlw	high(-1)
+	addwf	(main@b+1),f
+	movlw	high(-1)
+	xorwf	((main@b+1)),w
+	skipz
+	goto	u155
+	movlw	low(-1)
+	xorwf	((main@b)),w
+u155:
+
+	skipz
+	goto	u151
+	goto	u150
+u151:
+	goto	l1815
+u150:
+	goto	l1791
+	
+l709:	
+	goto	l1791
+	line	70
+	
+l710:	
+	line	33
+	goto	l1791
+	
+l711:	
+	line	71
+	
+l712:	
 	global	start
 	ljmp	start
 	opt stack 0
